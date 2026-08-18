@@ -1,4 +1,4 @@
-name: RailGuard CI
+name: RailGuard CI/CD
 
 on:
   push:
@@ -59,7 +59,7 @@ jobs:
         working-directory: terraform
         run: terraform validate -no-color
 
-  oidc-test:
+  deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: validate
 
@@ -76,5 +76,24 @@ jobs:
           role-to-assume: arn:aws:iam::443920089735:role/RailGuardGitHubDeployRole
           aws-region: eu-north-1
 
-      - name: Verify AWS identity
-        run: aws sts get-caller-identity
+      - name: Deploy RailGuard through SSM
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "i-0e9b285cb2a403781" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy RailGuard AI from GitHub Actions" \
+            --parameters 'commands=["bash /home/ec2-user/railguard-ai/scripts/deploy_ec2.sh"]' \
+            --query 'Command.CommandId' \
+            --output text)
+
+          echo "SSM Command ID: $COMMAND_ID"
+
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "i-0e9b285cb2a403781"
+
+          aws ssm get-command-invocation \
+            --command-id "$COMMAND_ID" \
+            --instance-id "i-0e9b285cb2a403781" \
+            --query '{Status:Status,ResponseCode:ResponseCode,Output:StandardOutputContent,Error:StandardErrorContent}' \
+            --output json
