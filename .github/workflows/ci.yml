@@ -8,6 +8,9 @@ on:
 
 jobs:
   validate:
+    permissions:
+      contents: read
+
     runs-on: ubuntu-latest
 
     steps:
@@ -55,3 +58,23 @@ jobs:
       - name: Terraform validate
         working-directory: terraform
         run: terraform validate -no-color
+
+  oidc-test:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate
+
+    permissions:
+      id-token: write
+      contents: read
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6.2.3
+        with:
+          role-to-assume: arn:aws:iam::443920089735:role/RailGuardGitHubDeployRole
+          aws-region: eu-north-1
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
