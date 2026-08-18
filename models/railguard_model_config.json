@@ -1,0 +1,31 @@
+{
+  "version": "railguard-v1",
+  "global_model": {
+    "path": "models/isolation_forest_trend_v1.joblib",
+    "threshold": 0.052927374478812114
+  },
+  "regime_model": {
+    "path": "models/regimes/kmeans_regime_v1.joblib",
+    "regimes": 2
+  },
+  "regime_anomaly_models": {
+    "0": {
+      "path": "models/regime_anomaly/regime_0_iforest.joblib",
+      "threshold": 0.04523117240309038
+    },
+    "1": {
+      "path": "models/regime_anomaly/regime_1_iforest.joblib",
+      "threshold": 0.021206417373863022
+    }
+  },
+  "risk_engine": {
+    "fault_anomaly_minutes": 20,
+    "gap_tolerance_minutes": 2,
+    "watch_minimum_minutes": 3,
+    "incident_merge_minutes": 240
+  },
+  "validation_period": {
+    "start": "2020-04-01 00:00:00",
+    "end": "2020-04-17 22:00:00"
+  }
+}

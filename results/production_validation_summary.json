@@ -1,0 +1,38 @@
+{
+  "model_version": "railguard-v1",
+  "documented_failures": 4,
+  "failures_detected": 4,
+  "detection_rate": 1.0,
+  "early_warnings": 1,
+  "failure_results": {
+    "F1": {
+      "failure_start": "2020-04-18T00:00:00",
+      "confirmed_at": "2020-04-18T00:42:00",
+      "delta_minutes": 42.0,
+      "classification": "rapid_fault_detection"
+    },
+    "F2": {
+      "failure_start": "2020-05-29T23:30:00",
+      "confirmed_at": "2020-05-29T23:34:00",
+      "delta_minutes": 4.0,
+      "classification": "rapid_fault_detection"
+    },
+    "F3": {
+      "failure_start": "2020-06-05T10:00:00",
+      "confirmed_at": "2020-06-05T10:09:00",
+      "delta_minutes": 9.0,
+      "classification": "rapid_fault_detection"
+    },
+    "F4": {
+      "failure_start": "2020-07-15T14:30:00",
+      "confirmed_at": "2020-07-15T13:52:00",
+      "delta_minutes": -38.0,
+      "classification": "early_warning"
+    }
+  },
+  "notes": [
+    "Results use the documented MetroPT failure windows.",
+    "Negative delta means confirmation occurred before documented failure start.",
+    "This validation does not claim universal two-hour predictive capability."
+  ]
+}
