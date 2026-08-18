@@ -1,0 +1,41 @@
+name: RailGuard CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compile application
+        run: |
+          python -m py_compile \
+            app/main.py \
+            app/model_service.py \
+            app/risk_engine.py \
+            app/feature_engine.py \
+            app/explainer.py \
+            app/drift_monitor.py \
+            app/s3_service.py \
+            app/n8n_service.py
+
+      - name: Build Docker image
+        run: |
+          docker build -t railguard-ai:ci .
