@@ -70,8 +70,19 @@ Python · Pandas · NumPy · scikit-learn · FastAPI · Docker · AWS EC2 · S3 
 - `POST /ingest`
 - `POST /resolve-fault`
 
+## CI/CD & Infrastructure as Code
+
+- GitHub Actions validates Python, Docker and Terraform on every push
+- GitHub OIDC provides passwordless AWS authentication
+- AWS Systems Manager deploys releases to EC2
+- Deployment includes health checks and automatic rollback
+- Terraform manages EC2, S3, IAM, CloudWatch, SNS, SSM and GitHub OIDC infrastructure
+- Final Terraform reconciliation: `No changes. Your infrastructure matches the configuration.`
+
+## Production Validation
+
+The deployed system successfully processed a real MetroPT feature window, detected a DUAL anomaly state, confirmed a persistent CRITICAL fault after 20 minutes, stored the prediction in S3, and triggered the authenticated n8n maintenance workflow with HTTP 200.
+
 ## Status
 
-Completed: ML pipeline, API, Docker, AWS S3, CloudWatch, Nginx and n8n maintenance automation.
-
-Next: GitHub Actions CI/CD and Terraform Infrastructure as Code.
+**Completed ✅** — ML pipeline, API, Docker, AWS infrastructure, monitoring, maintenance automation, Terraform and CI/CD are operational.
